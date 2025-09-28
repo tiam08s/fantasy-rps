@@ -1,0 +1,456 @@
+/* ===========================================
+   GLOBAL STYLES
+   =========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===========================================
+   GAME CONTAINER
+   =========================================== */
+
+.game-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ===========================================
+   GAME HEADER
+   =========================================== */
+
+.game-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 0;
+    border: 3px solid #333;
+    border-radius: 20px;
+    background: linear-gradient(45deg, #222 0%, #333 100%);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.game-title {
+    font-size: 4rem;
+    font-weight: 900;
+    text-shadow: 3px 3px 0px #000;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+}
+
+.game-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+/* ===========================================
+   GAME ARENA
+   =========================================== */
+
+.game-arena {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* ===========================================
+   PANELS (Player & Enemy)
+   =========================================== */
+
+.player-panel,
+.enemy-panel {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 2px solid #444;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.panel-header h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0px #000;
+    letter-spacing: 1px;
+}
+
+.villain-subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* ===========================================
+   PLAYER STATS
+   =========================================== */
+
+.stats-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border: 1px solid #555;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0px #000;
+}
+
+/* ===========================================
+   BATTLE ARENA
+   =========================================== */
+
+.battle-arena {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 3px solid #444;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.battle-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0px #000;
+    letter-spacing: 2px;
+}
+
+.battle-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+/* ===========================================
+   MOVE SELECTOR
+   =========================================== */
+
+.move-selector {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.move-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #333 0%, #444 100%);
+    border: 3px solid #555;
+    border-radius: 15px;
+    color: #fff;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.move-btn:hover {
+    background: linear-gradient(135deg, #444 0%, #555 100%);
+    border-color: #666;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.move-btn:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.move-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.move-icon {
+    font-size: 3rem;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.move-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.move-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+/* ===========================================
+   BATTLE RESULT
+   =========================================== */
+
+.battle-result {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border: 2px solid #555;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.result-message {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 1px 1px 0px #000;
+    transition: all 0.3s ease;
+}
+
+.win-result {
+    color: #fff;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.lose-result {
+    color: #ccc;
+    opacity: 0.8;
+}
+
+.tie-result {
+    color: #aaa;
+    font-style: italic;
+}
+
+.victory-result {
+    color: #fff;
+    font-size: 1.5rem;
+    text-shadow: 3px 3px 0px #000;
+    animation: pulse 1s infinite;
+}
+
+.defeat-result {
+    color: #ccc;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 0px #000;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ===========================================
+   ENEMY INFO
+   =========================================== */
+
+.enemy-move {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border: 2px solid #555;
+    border-radius: 15px;
+}
+
+.enemy-move-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.enemy-move-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 0px #000;
+    letter-spacing: 1px;
+}
+
+.enemy-status {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border: 1px solid #555;
+    border-radius: 8px;
+}
+
+.status-label {
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.status-value {
+    font-weight: 700;
+    text-shadow: 1px 1px 0px #000;
+}
+
+/* ===========================================
+   GAME RULES
+   =========================================== */
+
+.game-rules {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 2px solid #444;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.game-rules h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0px #000;
+    letter-spacing: 1px;
+}
+
+.rules-grid {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.rule-item {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 10px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border: 1px solid #555;
+    border-radius: 8px;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.win-condition {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 1024px) {
+    .game-arena {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .game-title {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        padding: 15px;
+    }
+    
+    .game-title {
+        font-size: 2.5rem;
+    }
+    
+    .battle-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .move-icon {
+        font-size: 2.5rem;
+    }
+    
+    .move-name {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 2rem;
+    }
+    
+    .move-btn {
+        padding: 20px 15px;
+    }
+    
+    .move-icon {
+        font-size: 2rem;
+    }
+}
+
+/* ===========================================
+   ACCESSIBILITY & FOCUS STATES
+   =========================================== */
+
+.move-btn:focus {
+    outline: 3px solid #666;
+    outline-offset: 3px;
+}
+
+.stat-card:focus-within {
+    outline: 2px solid #666;
+    outline-offset: 2px;
+}
+
+.dialogue-text {
+    margin-bottom: 20px;
+}

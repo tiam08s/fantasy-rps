@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corruptor Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <h1 class="game-title">CORRUPTOR</h1>
+            <p class="game-subtitle">Battle the Corruptor</p>
+        </header>
+
+        <!-- Main Game Arena -->
+        <main class="game-arena">
+            <!-- Player Status Panel -->
+            <div class="player-panel">
+                <div class="panel-header">
+                    <h2>PLAYER</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">G</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Gems</span>
+                            <span class="stat-value" id="gems">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">H</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Health</span>
+                            <span class="stat-value" id="health">100</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">W</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Win Streak</span>
+                            <span class="stat-value" id="win-streak">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">L</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Loss Streak</span>
+                            <span class="stat-value" id="loss-streak">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battle Arena -->
+            <div class="battle-arena">
+                <div class="battle-header">
+                    <h2>BATTLE ARENA</h2>
+                    <p class="battle-subtitle">Choose your warrior</p>
+                </div>
+                
+                <div class="move-selector">
+                    <button class="move-btn" onclick="playGame('Knight')" data-move="Knight">
+                        <div class="move-icon">K</div>
+                        <div class="move-name">KNIGHT</div>
+                        <div class="move-desc">Heavy & Strong</div>
+                    </button>
+                    <button class="move-btn" onclick="playGame('Archer')" data-move="Archer">
+                        <div class="move-icon">A</div>
+                        <div class="move-name">ARCHER</div>
+                        <div class="move-desc">Fast & Precise</div>
+                    </button>
+                    <button class="move-btn" onclick="playGame('Mage')" data-move="Mage">
+                        <div class="move-icon">M</div>
+                        <div class="move-name">MAGE</div>
+                        <div class="move-desc">Magical & Wise</div>
+                    </button>
+                </div>
+
+                <!-- Battle Result Display -->
+                <div class="battle-result" id="battle-result">
+                    <div class="result-message" id="result-message">Ready for battle!</div>
+                </div>
+            </div>
+
+            <!-- Enemy Panel -->
+            <div class="enemy-panel">
+                <div class="panel-header">
+                    <h2>THE CORRUPTOR</h2>
+                    <p class="villain-subtitle">Lord of Deception</p>
+                </div>
+                <div class="enemy-info">
+                    <div class="enemy-move" id="enemy-move">
+                        <div class="enemy-move-icon">?</div>
+                        <div class="enemy-move-name">Awaiting...</div>
+                    </div>
+                    <div class="villain-dialogue" id="villain-dialogue">
+                        <p class="dialogue-text">"Come, mortal. Test your mettle against my ancient wisdom."</p>
+                    </div>
+                    <div class="enemy-status">
+                        <div class="status-item">
+                            <span class="status-label">Intelligence:</span>
+                            <span class="status-value">Supreme</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Tactic:</span>
+                            <span class="status-value">Corruption</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Game Rules -->
+        <div class="game-rules">
+            <h3>BATTLE RULES</h3>
+            <div class="rules-grid">
+                <div class="rule-item">Knight beats Archer</div>
+                <div class="rule-item">Archer beats Mage</div>
+                <div class="rule-item">Mage beats Knight</div>
+            </div>
+            <p class="win-condition">Collect 10 gems to win! Lose if health reaches 0!</p>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            player: {gems: 0, health: 100, win_streak: 0, loss_streak: 0},
+            player_last_moves: []
+        };
+
+        // Load game state when page loads
+        async function loadGameState() {
+            try {
+                const response = await fetch('/state');
+                gameState = await response.json();
+                updateDisplay();
+            } catch (error) {
+                console.error('Error loading game state:', error);
+            }
+        }
+
+        // Play a game move
+        async function playGame(playerMove) {
+            // Add loading state
+            const buttons = document.querySelectorAll('.move-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            try {
+                const response = await fetch('/play', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({move: playerMove})
+                });
+                
+                const result = await response.json();
+                gameState = result.gameState;
+                updateDisplay();
+                showResult(result, playerMove);
+            } catch (error) {
+                console.error('Error playing game:', error);
+            } finally {
+                // Remove loading state
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        // Update the display with current game state
+        function updateDisplay() {
+            document.getElementById('gems').textContent = gameState.player.gems;
+            document.getElementById('health').textContent = gameState.player.health;
+            document.getElementById('win-streak').textContent = gameState.player.win_streak;
+            document.getElementById('loss-streak').textContent = gameState.player.loss_streak;
+        }
+
+        // Show game result with animations
+        function showResult(result, playerMove) {
+            const resultDiv = document.getElementById('result-message');
+            const enemyMoveDiv = document.getElementById('enemy-move');
+            const enemyIcon = enemyMoveDiv.querySelector('.enemy-move-icon');
+            const enemyName = enemyMoveDiv.querySelector('.enemy-move-name');
+            
+            // Update enemy move display
+            const moveIcons = {
+                'Knight': 'K',
+                'Archer': 'A',
+                'Mage': 'M'
+            };
+            
+            enemyIcon.textContent = moveIcons[result.corruptorMove];
+            enemyName.textContent = result.corruptorMove.toUpperCase();
+            
+            // Update result message
+            resultDiv.textContent = result.message;
+            
+            // Add result styling
+            resultDiv.className = 'result-message';
+            if (result.message.includes('passed')) {
+                resultDiv.classList.add('win-result');
+            } else if (result.message.includes('unlucky')) {
+                resultDiv.classList.add('lose-result');
+            } else if (result.message.includes('tie')) {
+                resultDiv.classList.add('tie-result');
+            }
+            
+            // Show game over message and auto-restart
+            if (result.gameOver) {
+                setTimeout(() => {
+                    if (result.win) {
+                        resultDiv.innerHTML = `VICTORY!<br>You collected ${gameState.player.gems} gems!`;
+                        resultDiv.classList.add('victory-result');
+                    } else {
+                        resultDiv.innerHTML = `DEFEAT!<br>The Corruptor has won!`;
+                        resultDiv.classList.add('defeat-result');
+                    }
+                    
+                    // Auto-restart after 3 seconds
+                    setTimeout(() => {
+                        restartGame();
+                    }, 3000);
+                }, 1500);
+            }
+        }
+
+        // Restart game function
+        async function restartGame() {
+            try {
+                // Reset server state
+                const response = await fetch('/reset', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                gameState = await response.json();
+                
+                // Update display
+                updateDisplay();
+                
+                // Reset UI
+                document.getElementById('result-message').textContent = 'Ready for battle!';
+                document.getElementById('result-message').className = 'result-message';
+                document.getElementById('enemy-move').innerHTML = '<div class="enemy-move-icon">?</div><div class="enemy-move-name">Awaiting...</div>';
+            } catch (error) {
+                console.error('Error resetting game:', error);
+            }
+        }
+
+        // Load game state when page loads
+        window.onload = loadGameState;
+    </script>
+</body>
+</html>
